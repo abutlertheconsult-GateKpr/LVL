@@ -4,17 +4,13 @@
 const SW_VERSION = 'lvl-sw-v1';
 const BASE = '/LVL/';
 const CACHE_NAME = 'lvl-cache-v1';
-const CACHE_URLS = [
-  BASE,
-  BASE + 'index.html',
-  BASE + 'Icon-512.png',
-  BASE + 'manifest.json',
-];
-
-// Files to cache on install
 const ASSETS = [
-  '/LVL/index.html',
-  '/LVL/manifest.json'
+  BASE + '/',
+  BASE + '/index.html',
+  BASE + '/manifest.json',
+  BASE + '/icon-192.png',
+  BASE + '/icon-512.png',
+  'https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap'
 ];
 
 // Install — cache core assets
