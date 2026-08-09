@@ -2,7 +2,7 @@
 // Deploy as sw.js at repo root
 
 const SW_VERSION = 'lvl-sw-v1';
-const BASE = '/Personal-Life-Tracker/';
+const BASE = '/LVL/';
 const CACHE_NAME = 'lvl-cache-v1';
 const CACHE_URLS = [
   BASE,
@@ -98,7 +98,7 @@ self.addEventListener('notificationclick', e => {
     : 'https://abutlertheconsult-gatekpr.github.io' + BASE;
   e.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clients => {
-      const existing = clients.find(c => c.url.includes('Personal-Life-Tracker'));
+      const existing = clients.find(c => c.url.includes('LVL'));
       if (existing) return existing.focus();
       return self.clients.openWindow(url);
     })
