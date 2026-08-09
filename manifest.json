@@ -2,8 +2,8 @@
   "name": "LVL — Life Balance Tracker",
   "short_name": "LVL",
   "description": "Track your life balance across roles and life areas. By Structure and Flow.",
-  "start_url": "/Personal-Life-Tracker/",
-  "scope": "/Personal-Life-Tracker/",
+  "start_url": "/LVL/",
+  "scope": "/LVL/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0a0908",
@@ -29,13 +29,13 @@
       "name": "Balance Dashboard",
       "short_name": "Balance",
       "description": "View your life balance",
-      "url": "/Personal-Life-Tracker/#dashboard"
+      "url": "/LVL/#dashboard"
     },
     {
       "name": "Calendar",
       "short_name": "Calendar",
       "description": "Log today's commitments",
-      "url": "/Personal-Life-Tracker/#calendar"
+      "url": "/LVL/#calendar"
     }
   ]
 }
