@@ -7496,6 +7496,33 @@ if (obDone()) {
 } else {
   startOnboarding();
 }
+
+// PWA install prompt handling
+let __deferredInstallPrompt = null;
+const installBtn = document.getElementById('install-btn');
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  __deferredInstallPrompt = e;
+  if(installBtn) installBtn.style.display = 'inline-flex';
+});
+function promptInstall(){
+  if(!__deferredInstallPrompt) return;
+  __deferredInstallPrompt.prompt();
+  __deferredInstallPrompt.userChoice.then(choice => {
+    if(choice.outcome === 'accepted'){
+      toast('App install accepted');
+    } else {
+      toast('App install dismissed');
+    }
+    __deferredInstallPrompt = null;
+    if(installBtn) installBtn.style.display = 'none';
+  });
+}
+window.addEventListener('appinstalled', () => {
+  toast('App installed');
+  if(installBtn) installBtn.style.display = 'none';
+});
+if(installBtn) installBtn.addEventListener('click', promptInstall);
 </script>
 </body>
 </html>
