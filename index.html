@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="LVL">
 <meta name="theme-color" content="#0a0908">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="/Personal-Life-Tracker/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/LVL/icons/icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 <title>LVL</title>
@@ -7329,8 +7329,8 @@ async function registerSW() {
   if (!('serviceWorker' in navigator)) return null;
   try {
     const reg = await navigator.serviceWorker.register(
-      'https://abutlertheconsult-gatekpr.github.io/Personal-Life-Tracker/sw.js',
-      { scope: '/Personal-Life-Tracker/' }
+      'https://abutlertheconsult-gatekpr.github.io/LVL/sw.js',
+      { scope: '/LVL/' }
     );
     return reg;
   } catch(e) {
