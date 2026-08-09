@@ -11,6 +11,12 @@ const CACHE_URLS = [
   BASE + 'manifest.json',
 ];
 
+// Files to cache on install
+const ASSETS = [
+  '/LVL/index.html',
+  '/LVL/manifest.json'
+];
+
 // Install — cache core assets
 self.addEventListener('install', e => {
   e.waitUntil(
