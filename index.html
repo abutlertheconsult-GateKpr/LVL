@@ -3,24 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>EQUILIB</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<style>
-
-  <!-- PWA -->
-<link rel="manifest" href="manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Equilib">
-<meta name="theme-color" content="#ff4d00">
-<link rel="apple-touch-icon" href="icon-192.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="apple-mobile-web-app-title" content="LVL">
+<meta name="theme-color" content="#0a0908">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="Icon-512.png">
+<link rel="icon" type="image/png" href="Icon-512.png">
+<title>LVL</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-/* ── EQUILIB — LIFE ROLE TRACKER DESIGN SYSTEM ── */
-
 :root {
   /* ── Light editorial — warm white base ── */
   --bg:         #f5f2ec;
@@ -1600,7 +1593,7 @@ svg.ring { transform: rotate(-90deg); }
 
 <nav>
   <div class="nav-brand-wrap">
-    <div class="nav-brand">EQUILIB<span>.</span></div>
+    <div class="nav-brand">LVL<span>.</span></div>
     <div class="nav-brand-sub">by Structure and Flow</div>
   </div>
   <div class="nav-tabs">
@@ -1659,7 +1652,7 @@ svg.ring { transform: rotate(-90deg); }
 <div id="page-faq" class="page">
   <div class="twoweek-header">
     <div class="twoweek-title">FAQ</div>
-    <div class="twoweek-sub">How to get the most out of EQUILIB</div>
+    <div class="twoweek-sub">How to get the most out of LVL</div>
   </div>
   <div id="faq-body" style="padding: 0 16px 40px;"></div>
 </div>
@@ -5744,8 +5737,8 @@ const FAQ_CONTENT = [
     section: 'Getting Started',
     items: [
       {
-        q: 'What is EQUILIB and how is it different from a to-do app?',
-        a: `EQUILIB isn't a to-do app — it's a life balance tracker. The goal isn't to check off tasks, it's to see clearly where you're showing up consistently and where you're not. Most people feel unfulfilled not because they're unproductive, but because they're pouring into one area while unknowingly neglecting others. EQUILIB makes that visible.`,
+        q: 'What is LVL and how is it different from a to-do app?',
+        a: `LVL isn't a to-do app — it's a life balance tracker. The goal isn't to check off tasks, it's to see clearly where you're showing up consistently and where you're not. Most people feel unfulfilled not because they're unproductive, but because they're pouring into one area while unknowingly neglecting others. LVL makes that visible.`,
         tip: 'Think of it less as a task manager and more as a mirror for your daily habits across all the roles you play.'
       },
       {
@@ -5777,7 +5770,7 @@ const FAQ_CONTENT = [
       },
       {
         q: 'What does ▲ improving / ▼ slipping mean on a card?',
-        a: `At the end of each dashboard window, EQUILIB saves a snapshot of your percentages. The next window compares your current numbers against that snapshot. <b>▲ improving</b> means you're doing better than last window. <b>▼ slipping</b> means you were performing better before. This is how you track whether you're actually growing over time, not just day to day.`,
+        a: `At the end of each dashboard window, LVL saves a snapshot of your percentages. The next window compares your current numbers against that snapshot. <b>▲ improving</b> means you're doing better than last window. <b>▼ slipping</b> means you were performing better before. This is how you track whether you're actually growing over time, not just day to day.`,
       },
       {
         q: 'Why is a card pulsing red?',
@@ -5808,12 +5801,12 @@ const FAQ_CONTENT = [
       },
       {
         q: 'What is "Track timing/prep" on a commitment?',
-        a: `When you mark a commitment as done, if it has timing/prep tracking enabled, EQUILIB will ask you: were you <b>On Time, Early, or Late</b>? And were you <b>Prepared, Unprepared, or Last Minute</b>?\n\nThese answers feed your <b>How I Show Up</b> card on the Balance dashboard — so you can see patterns in how you approach your commitments, not just whether you complete them.`,
+        a: `When you mark a commitment as done, if it has timing/prep tracking enabled, LVL will ask you: were you <b>On Time, Early, or Late</b>? And were you <b>Prepared, Unprepared, or Last Minute</b>?\n\nThese answers feed your <b>How I Show Up</b> card on the Balance dashboard — so you can see patterns in how you approach your commitments, not just whether you complete them.`,
         tip: 'Enable this on commitments where timing and preparedness matter — meetings, appointments, calls with people you care about.'
       },
       {
         q: 'What is "Track how consistently I show up for this"?',
-        a: `This is the <b>progress % tracker</b>. When enabled on a recurring commitment, EQUILIB tracks what percentage of the time you actually complete it within the current window. Tap a category card on the dashboard and switch to Stats view to see a breakdown per commitment.`,
+        a: `This is the <b>progress % tracker</b>. When enabled on a recurring commitment, LVL tracks what percentage of the time you actually complete it within the current window. Tap a category card on the dashboard and switch to Stats view to see a breakdown per commitment.`,
       },
     ]
   },
@@ -5884,7 +5877,7 @@ const FAQ_CONTENT = [
       },
       {
         q: 'How does Firebase sync work?',
-        a: `Firebase is an optional cloud sync. Once you set up a free Firebase project and enter your config in <b>Settings → Backup & Sync → Firebase Sync</b>, you can sign in with Google and push/pull your data across devices. Your data is stored under your Google account in your own Firebase project — EQUILIB doesn\'t have access to it.`,
+        a: `Firebase is an optional cloud sync. Once you set up a free Firebase project and enter your config in <b>Settings → Backup & Sync → Firebase Sync</b>, you can sign in with Google and push/pull your data across devices. Your data is stored under your Google account in your own Firebase project — LVL doesn\'t have access to it.`,
       },
       {
         q: 'Will my onboarding answers be stored or shared?',
@@ -6636,7 +6629,7 @@ function renderObStep() {
   // Brand
   const brand = document.createElement('div');
   brand.className = 'ob-brand';
-  brand.innerHTML = 'EQUILIB<span>.</span>';
+  brand.innerHTML = 'LVL<span>.</span>';
   inner.appendChild(brand);
 
   if (step === 0) { renderObIntro(inner); return; }
@@ -6668,7 +6661,7 @@ function renderObIntro(inner) {
   const q = document.createElement('div'); q.className = 'ob-question';
   q.textContent = 'Let\'s build your life around you.';
   const sub = document.createElement('div'); sub.className = 'ob-subtext';
-  sub.textContent = 'EQUILIB will ask you a few short questions to automatically create roles that reflect who you are — as a partner, parent, professional, and more.\n\nYour answers are never shared with anyone. They stay on your device, strictly for setting up your roles. You can modify or delete anything at any time.';
+  sub.textContent = 'LVL will ask you a few short questions to automatically create roles that reflect who you are — as a partner, parent, professional, and more.\n\nYour answers are never shared with anyone. They stay on your device, strictly for setting up your roles. You can modify or delete anything at any time.';
   sub.style.whiteSpace = 'pre-line';
   const actions = document.createElement('div'); actions.className = 'ob-actions';
   const startBtn = document.createElement('button'); startBtn.className = 'ob-next-btn';
@@ -6942,7 +6935,7 @@ function renderObSummary(inner) {
           typeWrap.style.opacity = '0.4'; typeWrap.style.pointerEvents = 'none';
         }
         confirmBtn.textContent = selected.size > 0
-          ? `✓ Add ${selected.size} item${selected.size !== 1 ? 's' : ''} to my EQUILIB`
+          ? `✓ Add ${selected.size} item${selected.size !== 1 ? 's' : ''} to my LVL`
           : 'Continue without adding';
       };
 
@@ -7014,7 +7007,7 @@ function renderObOrganize(inner) {
   inner.appendChild(list);
 
   const confirmBtn = document.createElement('button'); confirmBtn.className = 'ob-confirm-btn';
-  confirmBtn.textContent = `✓ Build my EQUILIB`;
+  confirmBtn.textContent = `✓ Build my LVL`;
   confirmBtn.onclick = () => {
     // Apply organize choices to items
     const finalItems = items.map(item => ({
@@ -7393,7 +7386,7 @@ async function scheduleTaskReminder(task, catLabel, dateKey2) {
   if (!fireAt || fireAt <= Date.now()) return;
   const timeStr = task.time ? formatTime12(task.time) : '';
   const body = `${catLabel}: ${task.text}${timeStr ? ' at ' + timeStr : ''}`;
-  await scheduleNotification(task._id || (dateKey2 + '_' + task.text), '⏰ EQUILIB Reminder', body, fireAt);
+  await scheduleNotification(task._id || (dateKey2 + '_' + task.text), '⏰ LVL Reminder', body, fireAt);
 }
 
 // Check for due/overdue tasks and show in-app banner
