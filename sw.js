@@ -1,7 +1,7 @@
 // LVL Service Worker — PWA + Push Notifications
 // Deploy as sw.js at repo root
 
-const SW_VERSION = 'lvl-sw-v1';
+const SW_VERSION = 'lvl-sw-v2';
 const BASE = '/LVL/';
 const CACHE_NAME = 'lvl-cache-v1';
 const ASSETS = [
