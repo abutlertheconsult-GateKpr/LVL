@@ -3,7 +3,7 @@
 
 const SW_VERSION = 'lvl-sw-v3';
 const BASE = new URL('.', self.location).pathname;
-const CACHE_NAME = 'lvl-cache-v3';
+const CACHE_NAME = `lvl-cache-${SW_VERSION}`;
 const ASSETS = [
   BASE,
   BASE + 'index.html',
@@ -33,9 +33,27 @@ self.addEventListener('activate', e => {
   self.clients.claim();
 });
 
-// Fetch — serve from cache, fall back to network
+// Fetch — use network-first for app shell and cache-first for other assets
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+
+  const requestURL = new URL(e.request.url);
+  const appShellPaths = [BASE, BASE + 'index.html', BASE + 'manifest.json'];
+  const isAppShell = requestURL.origin === self.location.origin && appShellPaths.includes(requestURL.pathname);
+
+  if (isAppShell) {
+    e.respondWith(
+      fetch(e.request).then(response => {
+        if (response && response.status === 200) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
+        }
+        return response;
+      }).catch(() => caches.match(e.request).then(cached => cached || caches.match(BASE + 'index.html')))
+    );
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;
