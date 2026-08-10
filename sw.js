@@ -3,7 +3,7 @@
 
 const SW_VERSION = 'lvl-sw-v2';
 const BASE = '/LVL/';
-const CACHE_NAME = 'lvl-cache-v1';
+const CACHE_NAME = 'lvl-cache-v2';
 const ASSETS = [
   BASE + '/',
   BASE + '/index.html',
