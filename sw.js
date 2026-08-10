@@ -1,24 +1,20 @@
 // LVL Service Worker — PWA + Push Notifications
 // Deploy as sw.js at repo root
 
-const SW_VERSION = 'lvl-sw-v3';
-const BASE = new URL('.', self.location).pathname;
-const CACHE_NAME = `lvl-cache-${SW_VERSION}`;
-const ASSETS = [
+const SW_VERSION = 'lvl-sw-v2';
+const BASE = '/LVL/';
+const CACHE_NAME = 'lvl-cache-v2';
+const CACHE_URLS = [
   BASE,
   BASE + 'index.html',
-  BASE + 'manifest.json',
-  BASE + 'icons/icon-192.png',
   BASE + 'icons/icon-512.png',
-  'https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap'
+  BASE + 'manifest.json',
 ];
 
 // Install — cache core assets
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(ASSETS))
-      .catch(() => {})
+    caches.open(CACHE_NAME).then(cache => cache.addAll(CACHE_URLS)).catch(() => {})
   );
   self.skipWaiting();
 });
@@ -33,27 +29,9 @@ self.addEventListener('activate', e => {
   self.clients.claim();
 });
 
-// Fetch — use network-first for app shell and cache-first for other assets
+// Fetch — serve from cache, fall back to network
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
-
-  const requestURL = new URL(e.request.url);
-  const appShellPaths = [BASE, BASE + 'index.html', BASE + 'manifest.json'];
-  const isAppShell = requestURL.origin === self.location.origin && appShellPaths.includes(requestURL.pathname);
-
-  if (isAppShell) {
-    e.respondWith(
-      fetch(e.request).then(response => {
-        if (response && response.status === 200) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
-        }
-        return response;
-      }).catch(() => caches.match(e.request).then(cached => cached || caches.match(BASE + 'index.html')))
-    );
-    return;
-  }
-
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;
@@ -100,7 +78,7 @@ self.addEventListener('message', e => {
         tag: id,
         requireInteraction: false,
         vibrate: [200, 100, 200],
-        data: { url: BASE }
+        data: { url: 'https://abutlertheconsult-gatekpr.github.io' + BASE }
       });
     }, delay);
   }
@@ -111,7 +89,7 @@ self.addEventListener('notificationclick', e => {
   e.notification.close();
   const url = (e.notification.data && e.notification.data.url)
     ? e.notification.data.url
-    : BASE;
+    : 'https://abutlertheconsult-gatekpr.github.io' + BASE;
   e.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clients => {
       const existing = clients.find(c => c.url.includes('LVL'));
