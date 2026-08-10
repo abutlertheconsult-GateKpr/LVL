@@ -7499,5 +7499,65 @@ if (obDone()) {
   startOnboarding();
 }
 </script>
+  
+<!-- STEP 1: PWA Install Prompt Container -->
+  <div id="pwa-install-container" style="margin: 20px 0; text-align: center;">
+    
+    <!-- Android & Desktop Install Button -->
+    <button id="install-btn" style="display: none; padding: 10px 18px; background-color: #14b8a6; color: #ffffff; border: none; border-radius: 6px; font-weight: 600; font-size: 0.9rem; cursor: pointer;">
+      Install LVL App
+    </button>
+
+    <!-- iOS Safari Instructions Banner -->
+    <div id="ios-install-banner" style="display: none; padding: 12px; background: #1a1714; color: #f5f2ec; border: 1px solid #333; border-radius: 6px; font-size: 0.85rem; max-width: 400px; margin: 0 auto;">
+      To install: tap the <strong>Share</strong> icon (box with arrow) and select <strong>"Add to Home Screen"</strong>.
+    </div>
+
+  </div>
+  
+<script>
+  // 1. Register Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js')
+        .then(reg => console.log('Service Worker registered:', reg))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    });
+  }
+
+  // 2. Handle Platform Install Prompts
+  let deferredPrompt;
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+
+  if (isIOS) {
+    // Show iOS Share menu instructions if not already running as an installed PWA
+    if (!isStandalone) {
+      const iosBanner = document.getElementById('ios-install-banner');
+      if (iosBanner) iosBanner.style.display = 'block';
+    }
+  } else {
+    // Capture Android / Chrome install trigger
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      
+      const installBtn = document.getElementById('install-btn');
+      if (installBtn) installBtn.style.display = 'inline-block';
+    });
+
+    // Handle button click for Android / Desktop
+    document.getElementById('install-btn')?.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User response: ${outcome}`);
+        deferredPrompt = null;
+        document.getElementById('install-btn').style.display = 'none';
+      }
+    });
+  }
+</script>
+  
 </body>
 </html>
