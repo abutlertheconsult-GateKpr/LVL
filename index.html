@@ -7330,7 +7330,7 @@ function removeTaskReminder(taskId) {
 async function registerSW() {
   if (!('serviceWorker' in navigator)) return null;
   try {
-    const reg = await navigator.serviceWorker.register('sw.js', { scope: './' });
+    const reg = await navigator.serviceWorker.register('sw.js');
     return reg;
   } catch(e) {
     console.warn('SW registration failed:', e);
@@ -7499,11 +7499,24 @@ if (obDone()) {
   
 <!-- PWA Install Prompt Container -->
   <div id="pwa-install-container" style="margin: 20px 0; text-align: center;">
-    <button id="install-btn" style="display: none; padding: 10px 18px; background-color: #14b8a6; color: #ffffff; border: none; border-radius: 6px; font-weight: 600; font-size: 0.9rem; cursor: pointer;">
+    <button id="install-btn" style="display: inline-block; padding: 10px 18px; background-color: #14b8a6; color: #111; border: none; border-radius: 6px; font-weight: 700; font-size: 0.95rem; cursor: pointer; box-shadow: 0 10px 20px rgba(20, 134, 102, 0.2);">
       Install LVL App
     </button>
-    <div id="ios-install-banner" style="display: none; padding: 12px; background: #1a1714; color: #f5f2ec; border: 1px solid #333; border-radius: 6px; font-size: 0.85rem; max-width: 400px; margin: 0 auto;">
+    <div id="ios-install-banner" style="display: none; padding: 12px; background: #1a1714; color: #f5f2ec; border: 1px solid #333; border-radius: 6px; font-size: 0.85rem; max-width: 400px; margin: 16px auto 0;">
       To install: tap the <strong>Share</strong> icon (box with arrow) and select <strong>"Add to Home Screen"</strong>.
+    </div>
+  </div>
+
+  <div id="pwa-install-modal" aria-hidden="true" style="position:fixed;top:0;left:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;z-index:9999;backdrop-filter:blur(2px);">
+    <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.45);"></div>
+    <div style="position:relative;max-width:420px;width:90%;background:#111; color:#f5f2ec; border-radius:16px; padding:24px; box-shadow:0 28px 80px rgba(0,0,0,0.35); text-align:left;">
+      <h2 style="margin:0 0 12px;font-size:1.35rem;">Install LVL</h2>
+      <p style="margin:0 0 20px;line-height:1.5;color:#ccc;">Add LVL to your home screen for quick access, offline support, and a more app-like experience.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;">
+        <button id="pwa-install-cancel" style="padding:10px 16px;border:none;border-radius:10px;background:#2c2c2c;color:#f5f2ec;cursor:pointer;">Maybe later</button>
+        <button id="pwa-install-confirm" style="padding:10px 16px;border:none;border-radius:10px;background:#14b8a6;color:#111;font-weight:700;cursor:pointer;">Install</button>
+      </div>
+      <p id="pwa-install-hint" style="margin:16px 0 0;color:#888;font-size:0.9rem;display:none;">If the install button does not appear, use your browser menu and choose "Add to Home Screen".</p>
     </div>
   </div>
 
@@ -7512,7 +7525,7 @@ if (obDone()) {
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', async () => {
         try {
-          const reg = await navigator.serviceWorker.register('sw.js', { scope: './' });
+          const reg = await navigator.serviceWorker.register('sw.js');
           console.log('Service Worker registered:', reg);
 
           if (reg.waiting) {
@@ -7540,29 +7553,92 @@ if (obDone()) {
     let deferredPrompt;
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+    const installModal = document.getElementById('pwa-install-modal');
+    const installConfirm = document.getElementById('pwa-install-confirm');
+    const installCancel = document.getElementById('pwa-install-cancel');
+    const installHint = document.getElementById('pwa-install-hint');
+    const installBtn = document.getElementById('install-btn');
+
+    function showInstallModal() {
+      if (!installModal) return;
+      installModal.style.display = 'flex';
+      installModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideInstallModal() {
+      if (!installModal) return;
+      installModal.style.display = 'none';
+      installModal.setAttribute('aria-hidden', 'true');
+    }
+
+    function showFallbackHint() {
+      if (installHint) installHint.style.display = 'block';
+    }
+
+    console.log('PWA Debug:', { isIOS, isStandalone, userAgent: navigator.userAgent });
 
     if (isIOS) {
       if (!isStandalone) {
         const iosBanner = document.getElementById('ios-install-banner');
         if (iosBanner) iosBanner.style.display = 'block';
       }
+      if (installBtn) {
+        installBtn.style.display = 'none';
+      }
     } else {
+      if (installBtn) {
+        installBtn.style.display = 'inline-block';
+        installBtn.addEventListener('click', () => {
+          if (deferredPrompt) {
+            showInstallModal();
+          } else {
+            showFallbackHint();
+          }
+        });
+      }
+
       window.addEventListener('beforeinstallprompt', (e) => {
+        console.log('beforeinstallprompt fired', e);
         e.preventDefault();
         deferredPrompt = e;
-        const installBtn = document.getElementById('install-btn');
-        if (installBtn) installBtn.style.display = 'inline-block';
+        showInstallModal();
       });
 
-      document.getElementById('install-btn')?.addEventListener('click', async () => {
-        if (deferredPrompt) {
+      window.addEventListener('appinstalled', () => {
+        console.log('App was installed.');
+        hideInstallModal();
+      });
+
+      if (installConfirm) {
+        installConfirm.addEventListener('click', async () => {
+          if (!deferredPrompt) {
+            showFallbackHint();
+            return;
+          }
+          hideInstallModal();
           deferredPrompt.prompt();
           const { outcome } = await deferredPrompt.userChoice;
           console.log(`User response: ${outcome}`);
           deferredPrompt = null;
-          document.getElementById('install-btn').style.display = 'none';
+          if (outcome !== 'accepted') {
+            showFallbackHint();
+          }
+        });
+      }
+
+      if (installCancel) {
+        installCancel.addEventListener('click', () => {
+          hideInstallModal();
+          showFallbackHint();
+        });
+      }
+
+      // If the install prompt never fires, let users know how to add it manually.
+      setTimeout(() => {
+        if (!deferredPrompt && !isStandalone) {
+          showFallbackHint();
         }
-      });
+      }, 5000);
     }
   </script>
   
