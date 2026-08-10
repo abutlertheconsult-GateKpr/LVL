@@ -57,8 +57,8 @@ self.addEventListener('push', e => {
   e.waitUntil(
     self.registration.showNotification(data.title || 'LVL', {
       body: data.body || '',
-      icon: BASE + 'Icon-512.png',
-      badge: BASE + 'Icon-512.png',
+      icon: BASE + 'icons/icon-512.png',
+      badge: BASE + 'icons/icon-512.png',
       tag: data.tag || 'lvl',
       data: data.url ? { url: data.url } : {},
       requireInteraction: false,
@@ -77,8 +77,8 @@ self.addEventListener('message', e => {
     setTimeout(() => {
       self.registration.showNotification(title, {
         body,
-        icon: BASE + 'Icon-512.png',
-        badge: BASE + 'Icon-512.png',
+        icon: BASE + 'icons/icon-512.png',
+        badge: BASE + 'icons/icon-512.png',
         tag: id,
         requireInteraction: false,
         vibrate: [200, 100, 200],
