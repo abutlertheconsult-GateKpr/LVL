@@ -7330,10 +7330,8 @@ function removeTaskReminder(taskId) {
 async function registerSW() {
   if (!('serviceWorker' in navigator)) return null;
   try {
-    const reg = await navigator.serviceWorker.register(
-      'https://abutlertheconsult-gatekpr.github.io/Personal-Life-Tracker/sw.js',
-      { scope: '/Personal-Life-Tracker/' }
-    );
+    const scope = location.pathname.replace(/\/[^/]*$/, '/') || '/';
+    const reg = await navigator.serviceWorker.register('sw.js', { scope });
     return reg;
   } catch(e) {
     console.warn('SW registration failed:', e);
@@ -7514,7 +7512,8 @@ if (obDone()) {
     // 1. Register Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js')
+        const scope = location.pathname.replace(/\/[^/]*$/, '/') || '/';
+        navigator.serviceWorker.register('sw.js', { scope })
           .then(reg => console.log('Service Worker registered:', reg))
           .catch(err => console.error('Service Worker registration failed:', err));
       });

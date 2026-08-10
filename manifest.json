@@ -2,7 +2,7 @@
   "name": "LVL — Life Balance Tracker",
   "short_name": "LVL",
   "description": "Track your life balance across roles and life areas. By Structure and Flow.",
-  "start_url": "index.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",

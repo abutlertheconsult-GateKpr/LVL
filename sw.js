@@ -2,7 +2,7 @@
 // Deploy as sw.js at repo root
 
 const SW_VERSION = 'lvl-sw-v3';
-const BASE = '/LVL/';
+const BASE = new URL('.', self.location).pathname;
 const CACHE_NAME = 'lvl-cache-v3';
 const ASSETS = [
   BASE,
@@ -82,7 +82,7 @@ self.addEventListener('message', e => {
         tag: id,
         requireInteraction: false,
         vibrate: [200, 100, 200],
-        data: { url: 'https://abutlertheconsult-gatekpr.github.io' + BASE }
+        data: { url: BASE }
       });
     }, delay);
   }
@@ -93,7 +93,7 @@ self.addEventListener('notificationclick', e => {
   e.notification.close();
   const url = (e.notification.data && e.notification.data.url)
     ? e.notification.data.url
-    : 'https://abutlertheconsult-gatekpr.github.io' + BASE;
+    : BASE;
   e.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clients => {
       const existing = clients.find(c => c.url.includes('LVL'));
