@@ -2,8 +2,8 @@
   "name": "LVL — Life Balance Tracker",
   "short_name": "LVL",
   "description": "Track your life balance across roles and life areas. By Structure and Flow.",
-  "start_url": "/LVL/index.html",
-  "scope": "/LVL/",
+  "start_url": "index.html",
+  "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0a0908",
@@ -11,31 +11,36 @@
   "categories": ["lifestyle", "productivity", "health"],
   "icons": [
     {
-      "src": "Icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "Icon-512.png",
+      "src": "icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
-  "screenshots": [],
   "shortcuts": [
     {
       "name": "Balance Dashboard",
       "short_name": "Balance",
       "description": "View your life balance",
-      "url": "/LVL/#dashboard"
+      "url": "#dashboard"
     },
     {
       "name": "Calendar",
       "short_name": "Calendar",
       "description": "Log today's commitments",
-      "url": "/LVL/#calendar"
+      "url": "#calendar"
     }
   ]
 }
