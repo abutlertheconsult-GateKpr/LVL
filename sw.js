@@ -16,7 +16,9 @@ const ASSETS = [
 // Install — cache core assets
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(CACHE_URLS)).catch(() => {})
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(ASSETS))
+      .catch(() => {})
   );
   self.skipWaiting();
 });
