@@ -6,9 +6,9 @@ const BASE = '/LVL/';
 const CACHE_NAME = 'lvl-cache-v2';
 const CACHE_URLS = [
   BASE,
-  BASE + 'index.html',
+  BASE + 'LVL/index.html',
   BASE + 'icons/icon-512.png',
-  BASE + 'manifest.json',
+  BASE + 'LVL/manifest.json',
 ];
 
 // Install — cache core assets
