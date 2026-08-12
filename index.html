@@ -4083,6 +4083,12 @@ function renderSettings() {
 
   const pwaEnabled = settings._pwa_install_button !== false;
   const pwaInstalled = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+  const promptAvailable = !!deferredPrompt;
+  const origin = window.location.origin;
+  const protocol = window.location.protocol;
+  const secureContext = protocol === 'https:' || origin.includes('localhost') || origin.includes('127.0.0.1');
+  const swSupported = 'serviceWorker' in navigator;
+  const swController = !!navigator.serviceWorker.controller;
 
   const pwaRow = document.createElement('div');
   pwaRow.className = 'settings-row';
@@ -4115,26 +4121,57 @@ function renderSettings() {
   const installBtnSettings = document.createElement('button');
   installBtnSettings.className = 'settings-save-btn';
   installBtnSettings.style.marginTop = '10px';
-  installBtnSettings.textContent = pwaInstalled ? 'App Installed' : 'Install App';
-  installBtnSettings.disabled = !pwaEnabled || pwaInstalled;
+  installBtnSettings.textContent = pwaInstalled
+    ? 'App Installed'
+    : promptAvailable
+      ? 'Install App'
+      : 'Install unavailable';
+  installBtnSettings.disabled = !pwaEnabled || pwaInstalled || !promptAvailable;
   installBtnSettings.onclick = () => {
     if (pwaInstalled) return;
     if (!deferredPrompt) {
-      alert('Install prompt not available yet. Please refresh the page or use Add to Home screen from your browser menu.');
+      alert('Install prompt is unavailable. Ensure the app is served over HTTPS or localhost, then refresh the page. File:// is not installable.');
       return;
     }
     triggerPwaInstall();
   };
   pwaBox.appendChild(installBtnSettings);
 
+  const openLocalBtn = document.createElement('button');
+  openLocalBtn.className = 'settings-save-btn';
+  openLocalBtn.style.marginTop = '10px';
+  openLocalBtn.textContent = 'Open localhost server';
+  openLocalBtn.onclick = () => {
+    window.open('http://127.0.0.1:8000/', '_blank');
+  };
+  pwaBox.appendChild(openLocalBtn);
+
   const pwaNote = document.createElement('div');
   pwaNote.className = 'date-window-note';
   pwaNote.textContent = pwaInstalled
     ? 'LVL is already installed on this device.'
-    : pwaEnabled
-      ? 'Use this button to trigger the install prompt when available.'
-      : 'Enable the checkbox above to show the install button.';
+    : !promptAvailable
+      ? protocol === 'file:'
+        ? 'Install prompt unavailable because the app is opened from file://. Use HTTPS or localhost instead.'
+        : 'Install prompt unavailable. Use HTTPS or localhost, then refresh the page.'
+      : pwaEnabled
+        ? 'Use this button to trigger the install prompt when available.'
+        : 'Enable the checkbox above to show the install button.';
   pwaBox.appendChild(pwaNote);
+
+  const pwaDebug = document.createElement('div');
+  pwaDebug.className = 'date-window-note';
+  pwaDebug.style.fontSize = '0.78rem';
+  pwaDebug.style.whiteSpace = 'pre-line';
+  pwaDebug.style.marginTop = '10px';
+  pwaDebug.textContent =
+    `Origin: ${origin}\n` +
+    `Protocol: ${protocol}\n` +
+    `Secure context: ${secureContext ? 'yes' : 'no'}\n` +
+    `Service worker support: ${swSupported ? 'yes' : 'no'}\n` +
+    `SW controlling page: ${swController ? 'yes' : 'no'}\n` +
+    `Install prompt captured: ${promptAvailable ? 'yes' : 'no'}`;
+  pwaBox.appendChild(pwaDebug);
 
   pwaSection.appendChild(pwaBox);
   body.appendChild(pwaSection);
@@ -7579,6 +7616,8 @@ window.addEventListener('beforeinstallprompt', (e) => {
   if (installBtn && pwaEnabled && !isAppInstalled()) {
     installBtn.style.display = 'inline-flex';
   }
+  const overlay = document.getElementById('settings-overlay');
+  if (overlay && overlay.classList.contains('open')) renderSettings();
 });
 
 window.addEventListener('appinstalled', () => {
