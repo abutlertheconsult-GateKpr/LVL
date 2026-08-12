@@ -1604,6 +1604,8 @@ svg.ring { transform: rotate(-90deg); }
     <button class="nav-tab" onclick="showPage('scheduled',this)">Future Plans</button>
     <button class="nav-tab" onclick="showPage('faq',this)">FAQ</button>
   </div>
+  <!-- Install App Button -->
+  <button id="installBtn" class="nav-settings-btn" style="display: none;" onclick="triggerPwaInstall()" title="Install App">📲</button>
   <button class="nav-settings-btn" onclick="openSettings()" title="Settings">⚙</button>
 </nav>
 
@@ -7495,6 +7497,31 @@ if (obDone()) {
   }, 500);
 } else {
   startOnboarding();
+}
+</script>
+
+  <script>
+let deferredPrompt;
+const installBtn = document.getElementById('installBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (installBtn) {
+    installBtn.style.display = 'inline-flex';
+  }
+});
+
+function triggerPwaInstall() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then((choiceResult) => {
+    if (choiceResult.outcome === 'accepted') {
+      console.log('App installed');
+    }
+    deferredPrompt = null;
+    if (installBtn) installBtn.style.display = 'none';
+  });
 }
 </script>
 </body>
