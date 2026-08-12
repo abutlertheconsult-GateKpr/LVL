@@ -4117,6 +4117,7 @@ function renderSettings() {
   const origin = window.location.origin;
   const protocol = window.location.protocol;
   const secureContext = protocol === 'https:' || origin.includes('localhost') || origin.includes('127.0.0.1');
+  const insecureLan = protocol === 'http:' && !origin.includes('localhost') && !origin.includes('127.0.0.1');
   const swSupported = 'serviceWorker' in navigator;
   const swController = !!navigator.serviceWorker.controller;
   const ua = navigator.userAgent || '';
@@ -4160,13 +4161,17 @@ function renderSettings() {
       ? 'Install App'
       : isIos
         ? 'Use Add to Home Screen'
-        : 'Install unavailable';
+        : insecureLan
+          ? 'Install unavailable on http LAN'
+          : 'Install unavailable';
   installBtnSettings.disabled = !pwaEnabled || pwaInstalled || (!promptAvailable && !isIos);
   installBtnSettings.onclick = () => {
     if (pwaInstalled) return;
     if (!deferredPrompt) {
       if (isIos) {
         alert('Safari on iOS does not support the install prompt. Use Share → Add to Home Screen.');
+      } else if (insecureLan) {
+        alert('Install prompt is unavailable on an insecure HTTP LAN origin. Use HTTPS or a secure tunnel (for example ngrok) to test installability.');
       } else {
         alert('Install prompt is unavailable. Ensure the app is served over HTTPS or localhost, then refresh the page. File:// is not installable.');
       }
@@ -4185,7 +4190,9 @@ function renderSettings() {
         ? 'iOS Safari does not support the install prompt. Use Share → Add to Home Screen.'
         : protocol === 'file:'
           ? 'Install prompt unavailable because the app is opened from file://. Use HTTPS or localhost instead.'
-          : 'Install prompt unavailable. Use HTTPS or localhost, then refresh the page.'
+          : insecureLan
+            ? 'Install prompt unavailable on HTTP LAN. Use HTTPS, localhost, or a secure tunnel (ngrok) to test installability.'
+            : 'Install prompt unavailable. Use HTTPS or localhost, then refresh the page.'
       : pwaEnabled
         ? 'Use this button to trigger the install prompt when available.'
         : 'Enable the checkbox above to show the install button.';
