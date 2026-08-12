@@ -7581,9 +7581,15 @@ window.addEventListener('beforeinstallprompt', (e) => {
   }
 });
 
+window.addEventListener('appinstalled', () => {
+  console.log('PWA installed');
+  if (installBtn) installBtn.style.display = 'none';
+  renderSettings();
+});
+
 function triggerPwaInstall() {
   if (!deferredPrompt) {
-    alert('Install prompt not available yet. Please refresh the page or use Add to Home screen from your browser menu.');
+    alert('Install prompt not available yet. Use your browser menu and choose "Add to Home screen" if available.');
     return;
   }
   deferredPrompt.prompt();
@@ -7593,6 +7599,7 @@ function triggerPwaInstall() {
     }
     deferredPrompt = null;
     if (installBtn) installBtn.style.display = 'none';
+    renderSettings();
   });
 }
 </script>
