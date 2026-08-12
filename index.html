@@ -7331,10 +7331,7 @@ function removeTaskReminder(taskId) {
 async function registerSW() {
   if (!('serviceWorker' in navigator)) return null;
   try {
-    const reg = await navigator.serviceWorker.register(
-      'https://abutlertheconsult-gatekpr.github.io/LVL/sw.js',
-      { scope: '/LVL/' }
-    );
+    const reg = await navigator.serviceWorker.register('sw.js');
     return reg;
   } catch(e) {
     console.warn('SW registration failed:', e);
