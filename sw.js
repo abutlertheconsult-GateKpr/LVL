@@ -7,6 +7,7 @@ const CACHE_NAME = `lvl-cache-${SW_VERSION}`;
 const CACHE_URLS = [
   BASE,
   BASE + 'index.html',
+  BASE + 'icons/icon-192.png',
   BASE + 'icons/icon-512.png',
   BASE + 'manifest.json',
 ];
