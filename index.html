@@ -7681,5 +7681,47 @@ function triggerPwaInstall() {
   });
 }
 </script>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    // Register service worker for secure contexts and localhost (for local testing)
+    const canRegister = location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname.includes('github.io');
+    if(canRegister){
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('SW registered:', reg.scope))
+        .catch(err => console.log('SW error:', err));
+    } else {
+      console.log('Service worker not registered: insecure or unsupported host');
+    }
+  });
+}
+
+// PWA install prompt handling
+let __deferredInstallPrompt = null;
+const installBtn = document.getElementById('install-btn');
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  __deferredInstallPrompt = e;
+  if(installBtn) installBtn.style.display = 'inline-flex';
+});
+function promptInstall(){
+  if(!__deferredInstallPrompt) return;
+  __deferredInstallPrompt.prompt();
+  __deferredInstallPrompt.userChoice.then(choice => {
+    if(choice.outcome === 'accepted'){
+      toast('App install accepted');
+    } else {
+      toast('App install dismissed');
+    }
+    __deferredInstallPrompt = null;
+    if(installBtn) installBtn.style.display = 'none';
+  });
+}
+window.addEventListener('appinstalled', () => {
+  toast('App installed');
+  if(installBtn) installBtn.style.display = 'none';
+});
+if(installBtn) installBtn.addEventListener('click', promptInstall);
+</script>
 </body>
 </html>
