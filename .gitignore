@@ -1,0 +1,24 @@
+# Node
+node_modules/
+npm-debug.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+
+# Logs
+logs/
+*.log
+
+# Env
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# Mac
+*.DS_Store

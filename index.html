@@ -7470,18 +7470,6 @@ function removeTaskReminder(taskId) {
   const r = getReminders(); delete r[taskId]; saveReminders(r);
 }
 
-// Register SW
-async function registerSW() {
-  if (!('serviceWorker' in navigator)) return null;
-  try {
-    const reg = await navigator.serviceWorker.register('sw.js');
-    return reg;
-  } catch(e) {
-    console.warn('SW registration failed:', e);
-    return null;
-  }
-}
-
 // Request notification permission
 async function requestNotifPermission() {
   if (!('Notification' in window)) return false;
@@ -7633,7 +7621,6 @@ if (obDone()) {
   setTimeout(checkAndPromptCommitments, 800);
   // Notifications
   setTimeout(() => {
-    registerSW();
     setTimeout(checkInAppNotifications, 1200);
   }, 500);
 } else {
@@ -7641,48 +7628,6 @@ if (obDone()) {
 }
 </script>
 
-  <script>
-let deferredPrompt;
-const installBtn = document.getElementById('installBtn');
-
-function isAppInstalled() {
-  return window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
-}
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  const settings = getSettings();
-  const pwaEnabled = settings._pwa_install_button !== false;
-  if (installBtn && pwaEnabled && !isAppInstalled()) {
-    installBtn.style.display = 'inline-flex';
-  }
-  const overlay = document.getElementById('settings-overlay');
-  if (overlay && overlay.classList.contains('open')) renderSettings();
-});
-
-window.addEventListener('appinstalled', () => {
-  console.log('PWA installed');
-  if (installBtn) installBtn.style.display = 'none';
-  renderSettings();
-});
-
-function triggerPwaInstall() {
-  if (!deferredPrompt) {
-    alert('Install prompt not available yet. Use your browser menu and choose "Add to Home screen" if available.');
-    return;
-  }
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then((choiceResult) => {
-    if (choiceResult.outcome === 'accepted') {
-      console.log('App installed');
-    }
-    deferredPrompt = null;
-    if (installBtn) installBtn.style.display = 'none';
-    renderSettings();
-  });
-}
-</script>
 <script>
 if('serviceWorker' in navigator){
   window.addEventListener('load', () => {
