@@ -7634,7 +7634,7 @@ if('serviceWorker' in navigator){
     // Register service worker for secure contexts and localhost (for local testing)
     const canRegister = location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname.includes('github.io');
     if(canRegister){
-      navigator.serviceWorker.register('./sw.js')
+      navigator.serviceWorker.register('/LVL/sw.js')
         .then(reg => console.log('SW registered:', reg.scope))
         .catch(err => console.log('SW error:', err));
     } else {
