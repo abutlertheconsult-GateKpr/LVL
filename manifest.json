@@ -2,18 +2,13 @@
   "id": "/LVL/",
   "name": "LVL - Life Balance Tracker",
   "short_name": "LVL",
-  "description": "Track your life balance across roles and life areas. By Structure and Flow.",
+  "description": "Track your life balance across roles and life areas.",
   "start_url": "/LVL/index.html",
   "scope": "/LVL/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0a0908",
   "theme_color": "#0a0908",
-  "categories": [
-    "lifestyle",
-    "productivity",
-    "health"
-  ],
   "icons": [
     {
       "src": "/LVL/icon-192.png",
