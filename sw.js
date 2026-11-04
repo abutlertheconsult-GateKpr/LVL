@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'LVL-v4';
+﻿const CACHE_NAME = 'LVL-v5';
 const BASE = new URL('.', self.location.href).pathname.replace(/\/$/, '');
 
 const ASSETS = [
