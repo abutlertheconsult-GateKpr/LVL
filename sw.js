@@ -1,5 +1,5 @@
-const CACHE_NAME = 'LVL-v1';
-const BASE = '/LVL';
+const CACHE_NAME = 'LVL-v2';
+const BASE = new URL('.', self.location.href).pathname.replace(/\/$/, '');
 
 const ASSETS = [
   BASE + '/',

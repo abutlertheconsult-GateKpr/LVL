@@ -11,10 +11,10 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="LVL">
   <meta name="theme-color" content="#0a0908">
-  <link rel="manifest" href="/LVL/manifest.json">
-  <link rel="apple-touch-icon" sizes="192x192" href="/LVL/icon-192.png">
-  <link rel="apple-touch-icon" sizes="512x512" href="/LVL/icon-512.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="/LVL/icon-192.png">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="./icon-512.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -7629,12 +7629,28 @@ if (obDone()) {
 </script>
 
 <script>
+let deferredPrompt = null;
+function triggerPwaInstall(){
+  if(!deferredPrompt){
+    toast('Install prompt is not available yet. Use your browser menu to add LVL to your home screen.');
+    return;
+  }
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(choice => {
+    if(choice.outcome==='accepted')toast('App install accepted');
+    else toast('App install dismissed');
+    deferredPrompt=null;
+    const navInstallBtn=document.getElementById('installBtn');
+    if(navInstallBtn)navInstallBtn.style.display='none';
+  });
+}
+
 if('serviceWorker' in navigator){
   window.addEventListener('load', () => {
     // Register service worker for secure contexts and localhost (for local testing)
     const canRegister = location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname.includes('github.io');
     if(canRegister){
-      navigator.serviceWorker.register('/LVL/sw.js')
+      navigator.serviceWorker.register('./sw.js')
         .then(reg => console.log('SW registered:', reg.scope))
         .catch(err => console.log('SW error:', err));
     } else {
@@ -7644,31 +7660,18 @@ if('serviceWorker' in navigator){
 }
 
 // PWA install prompt handling
-let __deferredInstallPrompt = null;
-const installBtn = document.getElementById('install-btn');
+const installBtn = document.getElementById('installBtn');
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
-  __deferredInstallPrompt = e;
+  deferredPrompt = e;
   if(installBtn) installBtn.style.display = 'inline-flex';
 });
-function promptInstall(){
-  if(!__deferredInstallPrompt) return;
-  __deferredInstallPrompt.prompt();
-  __deferredInstallPrompt.userChoice.then(choice => {
-    if(choice.outcome === 'accepted'){
-      toast('App install accepted');
-    } else {
-      toast('App install dismissed');
-    }
-    __deferredInstallPrompt = null;
-    if(installBtn) installBtn.style.display = 'none';
-  });
-}
 window.addEventListener('appinstalled', () => {
+  deferredPrompt=null;
   toast('App installed');
   if(installBtn) installBtn.style.display = 'none';
 });
-if(installBtn) installBtn.addEventListener('click', promptInstall);
+if(installBtn) installBtn.addEventListener('click', triggerPwaInstall);
 </script>
 </body>
 </html>
