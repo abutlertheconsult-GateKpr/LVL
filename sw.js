@@ -1,12 +1,12 @@
-﻿const CACHE_NAME = 'LVL-v3';
+﻿const CACHE_NAME = 'LVL-v4';
 const BASE = new URL('.', self.location.href).pathname.replace(/\/$/, '');
 
 const ASSETS = [
   BASE + '/',
   BASE + '/index.html',
   BASE + '/manifest.json',
-  BASE + '/icon-192.png',
-  BASE + '/icon-512.png'
+  BASE + '/icon-192-v3.png',
+  BASE + '/icon-512-v3.png'
 ];
 
 // Install Event - Pre-cache core assets
