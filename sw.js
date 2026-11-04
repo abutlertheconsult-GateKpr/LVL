@@ -1,4 +1,4 @@
-const CACHE_NAME = 'LVL-v2';
+﻿const CACHE_NAME = 'LVL-v3';
 const BASE = new URL('.', self.location.href).pathname.replace(/\/$/, '');
 
 const ASSETS = [
@@ -39,3 +39,4 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
+
